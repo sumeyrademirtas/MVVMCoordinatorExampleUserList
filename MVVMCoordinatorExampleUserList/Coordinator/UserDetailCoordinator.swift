@@ -8,11 +8,10 @@
 import UIKit
 
 class UserDetailCoordinator: Coordinator {
-    func start() {
-        
-    }
+    func start() {}
     
     var navigationController: UINavigationController
+    var completion: (() -> Void)?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -24,5 +23,7 @@ class UserDetailCoordinator: Coordinator {
         navigationController.pushViewController(userDetailVC, animated: true)
     }
     
-    
+    func finish() {
+        completion?() // Koordinatör tamamlandığında AppCoordinator'a haber ver
+    }
 }

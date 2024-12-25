@@ -13,7 +13,9 @@ class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
     let firstScreen = UserListViewController()
     
-    init (windowScene: UIWindowScene) {
+    var childCoordinators: [Coordinator] = []
+    
+    init(windowScene: UIWindowScene) {
         self.uiWindow = UIWindow(windowScene: windowScene)
         self.navigationController = UINavigationController()
     }
@@ -23,17 +25,21 @@ class AppCoordinator: Coordinator {
         uiWindow.rootViewController = navigationController
         uiWindow.makeKeyAndVisible()
         navigationController.viewControllers = [firstScreen]
+    }
+
+    func showUserDetail(user: User) {
+        let detailCoordinator = UserDetailCoordinator(navigationController: navigationController)
         
+        // Koordinatör tamamlanınca listeden kaldır
+        detailCoordinator.completion = { [weak self] in
+            self?.removeChildCoordinator(detailCoordinator)
+        }
+        
+        childCoordinators.append(detailCoordinator)
+        detailCoordinator.start(user: user)
     }
     
-//    func showUserDetail(user: User) {
-//        let detailVC = UserDetailViewController()
-//        detailVC.user = user
-//        navigationController.pushViewController(detailVC, animated: true)
-//    }
-    
-    func showUserDetail(user: User) {
-           let detailCoordinator = UserDetailCoordinator(navigationController: navigationController)
-           detailCoordinator.start(user: user)
-       }
+    func removeChildCoordinator(_ coordinator: Coordinator) {
+        childCoordinators.removeAll { $0 === coordinator }
+    }
 }
