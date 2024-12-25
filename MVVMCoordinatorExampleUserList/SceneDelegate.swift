@@ -10,16 +10,22 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var coordinator: AppCoordinator?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
        
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene = windowScene
+        
+//        BU KISIMLARA ARTIK IHTIYACIMIZ YOK. CUNKU BU ISLEVI ARTIK APPCOORDINATOR USTLENECEK. DAHA TEMIZ BIR YAPI. (SRP)
+//        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+//        window?.windowScene = windowScene
 //        window?.rootViewController = UserListViewController()
-        window?.rootViewController = UINavigationController(rootViewController: UserListViewController())
-        window?.makeKeyAndVisible()
+//        window?.rootViewController = UINavigationController(rootViewController: UserListViewController())
+//        window?.makeKeyAndVisible()
+        
+        coordinator = AppCoordinator(windowScene: windowScene)
+           coordinator?.start()
         
     }
 

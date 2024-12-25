@@ -9,6 +9,7 @@ import UIKit
 
 class UserListViewController: UIViewController {
     private let tableView: UITableView = .init()
+    weak var coordinator: AppCoordinator? //ekranlar arası geçişi AppCoordinator’a bildirmek için kullanılacak.
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,10 +44,6 @@ extension UserListViewController: UITableViewDataSource {
 extension UserListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedUser = MockData.sampleUsers[indexPath.row]
-
-        let detailVC = UserDetailViewController()
-        detailVC.user = selectedUser
-
-        navigationController?.pushViewController(detailVC, animated: true)
+        coordinator?.showUserDetail(user: selectedUser)
     }
 }
