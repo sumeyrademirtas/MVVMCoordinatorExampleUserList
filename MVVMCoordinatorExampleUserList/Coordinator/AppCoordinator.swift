@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
-class AppCoordinator {
+class AppCoordinator: Coordinator {
     let uiWindow: UIWindow
-    let navigationController = UINavigationController()
+    var navigationController: UINavigationController
     let firstScreen = UserListViewController()
     
     init (windowScene: UIWindowScene) {
         self.uiWindow = UIWindow(windowScene: windowScene)
+        self.navigationController = UINavigationController()
     }
     
     func start() {
@@ -25,9 +26,14 @@ class AppCoordinator {
         
     }
     
+//    func showUserDetail(user: User) {
+//        let detailVC = UserDetailViewController()
+//        detailVC.user = user
+//        navigationController.pushViewController(detailVC, animated: true)
+//    }
+    
     func showUserDetail(user: User) {
-        let detailVC = UserDetailViewController()
-        detailVC.user = user
-        navigationController.pushViewController(detailVC, animated: true)
-    }
+           let detailCoordinator = UserDetailCoordinator(navigationController: navigationController)
+           detailCoordinator.start(user: user)
+       }
 }
