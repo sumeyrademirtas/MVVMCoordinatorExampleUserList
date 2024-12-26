@@ -5,11 +5,16 @@
 //  Created by Sümeyra Demirtaş on 12/24/24.
 //
 
-import UIKit
 import SnapKit
+import UIKit
+
+protocol UserDetailViewControllerDelegate: AnyObject {
+    func userDetailViewControllerDidRequestEdit(_ viewController: UserDetailViewController, user: CDUser)
+}
 
 class UserDetailViewController: UIViewController {
-    var user: User?
+    weak var delegate: UserDetailViewControllerDelegate?
+    var user: CDUser?
     
     // nameLabel
     private let nameLabel: UILabel = {
@@ -41,6 +46,15 @@ class UserDetailViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
+    
+    // editButton
+    private let editButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Edit", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,20 +66,38 @@ class UserDetailViewController: UIViewController {
         addSubviews()
         setupView()
         setupUserDetails()
+        setupActions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-
+        // Core Data'dan kullanıcıyı güncel bilgilerle getir
+        if let email = user?.email {
+            if let updatedUser = CoreDataManager.shared.fetchUser(byEmail: email) {
+                user = updatedUser
+                refreshUI()
+            }
+        }
+    }
+    
+    private func setupActions() {
+        editButton.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
+    }
+    
+    @objc private func didTapEdit() {
+        guard let user = user else { return }
+        delegate?.userDetailViewControllerDidRequestEdit(self, user: user)
     }
     
     private func addSubviews() {
-        // Alt görünümleri view'a ekliyoruz
         view.addSubview(profileImage)
         view.addSubview(nameLabel)
         view.addSubview(emailLabel)
-        
+        view.addSubview(editButton)
     }
     
     private func setupView() {
-
         profileImage.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.centerX.equalToSuperview()
@@ -83,16 +115,27 @@ class UserDetailViewController: UIViewController {
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().inset(20)
         }
+        
+        editButton.snp.makeConstraints { make in
+            make.top.equalTo(emailLabel.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+        }
     }
     
     private func setupUserDetails() {
-           // Kullanıcı bilgilerini label'lara ayarla
-           if let user = user {
-               nameLabel.text = user.name
-               emailLabel.text = user.email
-           } else {
-               nameLabel.text = "No user selected"
-               emailLabel.text = ""
-           }
-       }
+        // Kullanıcı bilgilerini label'lara ayarla
+        if let user = user {
+            nameLabel.text = user.name
+            emailLabel.text = user.email
+        } else {
+            nameLabel.text = "No user selected"
+            emailLabel.text = ""
+        }
+    }
+    
+    func refreshUI() {
+        guard let user = user else { return }
+        nameLabel.text = user.name
+        emailLabel.text = user.email
+    }
 }

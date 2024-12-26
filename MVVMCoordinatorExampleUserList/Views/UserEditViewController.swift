@@ -7,11 +7,14 @@
 
 import UIKit
 
+protocol UserEditViewControllerDelegate: AnyObject {
+    func userEditViewControllerDidSave(_ viewController: UserEditViewController, updatedUser: CDUser)
+    func userEditViewControllerDidCancel(_ viewController: UserEditViewController)
+}
+
 class UserEditViewController: UIViewController {
-    var onSave: ((User) -> Void)? // Kaydedilen kullanıcıyı döndürmek için
-    var onCancel: (() -> Void)? // İptal işlemi için closure
-    
-    var user: User?
+    weak var delegate: UserEditViewControllerDelegate?
+    var user: CDUser?
     
     // emailTextField
     private let emailTextField: UITextField = {
@@ -97,27 +100,26 @@ class UserEditViewController: UIViewController {
     }
     
     private func populateFields() {
-        
-        if let user =  user {
+        if let user = user {
             usernameTextField.text = user.name
             emailTextField.text = user.email
         }
-        
     }
 
     @objc private func saveTapped() {
         guard let name = usernameTextField.text, !name.isEmpty,
-              let email = emailTextField.text, !email.isEmpty
-        else {
+              let email = emailTextField.text, !email.isEmpty,
+              let user = user else {
             print("Name or email cannot be empty")
             return
         }
 
-        let user = User(name: name, email: email) // Yeni kullanıcı nesnesi
-        onSave?(user) // Kaydetme işlemi için closure çağrılır
+        CoreDataManager.shared.updateUser(user, name: name, email: email)
+        delegate?.userEditViewControllerDidSave(self, updatedUser: user)
     }
 
     @objc private func cancelTapped() {
-        onCancel?() // İptal işlemi için closure çağrılır
+        print("Cancel button tapped") // Test
+        delegate?.userEditViewControllerDidCancel(self)
     }
 }

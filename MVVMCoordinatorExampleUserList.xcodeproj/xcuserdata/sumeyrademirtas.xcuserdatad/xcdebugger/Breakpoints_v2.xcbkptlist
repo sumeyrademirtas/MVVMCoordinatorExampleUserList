@@ -23,63 +23,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "15086A03-65E3-4C10-8595-20ACB4858677"
-            shouldBeEnabled = "Yes"
+            uuid = "2B700D3A-6D9C-4A52-8326-C100EEFE4779"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MVVMCoordinatorExampleUserList/Coordinator/AppCoordinator.swift"
+            filePath = "../../../Library/Developer/Xcode/DerivedData/MVVMCoordinatorExampleUserList-csraxvqyjrcikibzeepvzwnfzyxe/Build/Intermediates.noindex/MVVMCoordinatorExampleUserList.build/Debug-iphonesimulator/MVVMCoordinatorExampleUserList.build/DerivedSources/CoreDataGenerated/MVVMCoordinatorExampleUserList/CDUser+CoreDataClass.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "showUserDetail(user:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "15086A03-65E3-4C10-8595-20ACB4858677 - d6d89cdbebed7887"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MVVMCoordinatorExampleUserList.AppCoordinator.showUserDetail(user: MVVMCoordinatorExampleUserList.User) -&gt; ()"
-                  moduleName = "MVVMCoordinatorExampleUserList.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sumeyrademirtas/Desktop/Swift_/MVVMCoordinatorExampleUserList/MVVMCoordinatorExampleUserList/Coordinator/AppCoordinator.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "34"
-                  endingLineNumber = "34">
-               </Location>
-               <Location
-                  uuid = "15086A03-65E3-4C10-8595-20ACB4858677 - d529e5a4c69c394a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in MVVMCoordinatorExampleUserList.AppCoordinator.showUserDetail(user: MVVMCoordinatorExampleUserList.User) -&gt; ()"
-                  moduleName = "MVVMCoordinatorExampleUserList.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sumeyrademirtas/Desktop/Swift_/MVVMCoordinatorExampleUserList/MVVMCoordinatorExampleUserList/Coordinator/AppCoordinator.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "34"
-                  endingLineNumber = "34">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A91CF46A-121A-4712-B848-0DE36EF38866"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MVVMCoordinatorExampleUserList/Coordinator/AppCoordinator.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "showUserDetail(user:)"
-            landmarkType = "7">
+            startingLineNumber = "9"
+            endingLineNumber = "9"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
