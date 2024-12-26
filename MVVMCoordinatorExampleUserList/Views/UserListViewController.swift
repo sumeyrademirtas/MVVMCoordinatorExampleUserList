@@ -10,7 +10,7 @@ import UIKit
 class UserListViewController: UIViewController {
     private let tableView: UITableView = .init()
     weak var coordinator: AppCoordinator? // Ekranlar arası geçişi AppCoordinator’a bildirmek için kullanılacak.
-    
+
     private var users: [CDUser] = [] // Core Data'dan gelen kullanıcıları saklamak için dizi // GÜNCELLENDİ
 
     override func viewDidLoad() {
@@ -19,6 +19,15 @@ class UserListViewController: UIViewController {
         title = "User List"
 
         setupTableView()
+        setupAddButton() // Yeni bir fonksiyonla + butonunu ayarlıyoruz
+    }
+
+    private func setupAddButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddUser))
+    }
+
+    @objc private func didTapAddUser() {
+        coordinator?.showAddUserScreen() // Coordinator üzerinden add user ekranına geçiş yap
     }
 
     override func viewWillAppear(_ animated: Bool) {

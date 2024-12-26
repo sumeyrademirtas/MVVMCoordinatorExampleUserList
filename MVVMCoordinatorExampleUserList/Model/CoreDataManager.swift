@@ -26,14 +26,14 @@ class CoreDataManager {
         return persistentContainer.viewContext
     }
     
-    func initializeData() {
-        // Eğer hiç kullanıcı yoksa örnek kullanıcılar ekle
-        if fetchUsers().isEmpty {
-            addUser(name: "John Doe", email: "john@example.com")
-            addUser(name: "Jane Smith", email: "jane@example.com")
-            addUser(name: "Emily Johnson", email: "emily@example.com")
-        }
-    }
+//    func initializeData() {
+//        // Eğer hiç kullanıcı yoksa örnek kullanıcılar ekle
+//        if fetchUsers().isEmpty {
+//            addUser(name: "John Doe", email: "john@example.com")
+//            addUser(name: "Jane Smith", email: "jane@example.com")
+//            addUser(name: "Emily Johnson", email: "emily@example.com")
+//        }
+//    }
 
     // Kullanıcıları getir
     func fetchUser(byEmail email: String) -> CDUser? {

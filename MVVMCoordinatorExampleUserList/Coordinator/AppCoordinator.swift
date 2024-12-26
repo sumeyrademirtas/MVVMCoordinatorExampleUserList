@@ -21,7 +21,7 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        CoreDataManager.shared.initializeData() // Örnek kullanıcıları ekle
+        //CoreDataManager.shared.initializeData() // Örnek kullanıcıları ekle
         firstScreen.coordinator = self
         uiWindow.rootViewController = navigationController
         uiWindow.makeKeyAndVisible()
@@ -58,6 +58,12 @@ class AppCoordinator: Coordinator {
         childCoordinators.removeAll { $0 === coordinator }
         print("After removing: \(childCoordinators.count) coordinators") // Test
     }
+    
+    func showAddUserScreen() {
+        let addUserVC = AddUserViewController()
+        addUserVC.delegate = self // AppCoordinator'u delegate yapıyoruz
+        navigationController.pushViewController(addUserVC, animated: true)
+    }
 }
 
 extension AppCoordinator: UserEditCoordinatorDelegate {
@@ -79,5 +85,12 @@ extension AppCoordinator: UserEditCoordinatorDelegate {
 extension AppCoordinator: UserDetailViewControllerDelegate {
     func userDetailViewControllerDidRequestEdit(_ viewController: UserDetailViewController, user: CDUser) {
         showEditScreen(for: user)
+    }
+}
+
+extension AppCoordinator: AddUserViewControllerDelegate {
+    func addUserViewControllerDidSave(_ viewController: AddUserViewController, name: String, email: String) {
+        CoreDataManager.shared.addUser(name: name, email: email)
+        refreshUserList()
     }
 }
