@@ -75,6 +75,11 @@ class CoreDataManager {
         user.email = email
         saveContext()
     }
+    
+    func deleteUser(_ user: CDUser) {
+        context.delete(user) // Core Data'dan sil
+        saveContext()        // Değişiklikleri kaydet
+    }
 
     // Değişiklikleri kaydet
     func saveContext() {

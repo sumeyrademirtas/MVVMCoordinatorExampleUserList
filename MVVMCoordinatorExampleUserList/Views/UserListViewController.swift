@@ -68,4 +68,22 @@ extension UserListViewController: UITableViewDelegate {
         let selectedUser = users[indexPath.row] // Core Data'dan gelen kullanıcı // GÜNCELLENDİ
         coordinator?.showUserDetail(user: selectedUser) // GÜNCELLENDİ
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                // 1. Core Data'dan kullanıcıyı sil
+                let userToDelete = users[indexPath.row]
+                CoreDataManager.shared.deleteUser(userToDelete)
+                
+                // 2. users dizisinden kaldır
+                users.remove(at: indexPath.row)
+                
+                // 3. TableView'dan hücreyi kaldır
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
 }
