@@ -28,9 +28,9 @@ class AppCoordinator: Coordinator {
     }
 
     func showUserDetail(user: CDUser) {
-        let detailVC = UserDetailViewController()
-        detailVC.user = user
-        detailVC.delegate = self // Delegate olarak AppCoordinator atanıyor
+        let viewModel = UserDetailViewModel(user: user)
+        let detailVC = UserDetailViewController(viewModel: viewModel)
+        detailVC.delegate = self // Delegate atanıyor mu?
         navigationController.pushViewController(detailVC, animated: true)
     }
 
@@ -49,7 +49,6 @@ class AppCoordinator: Coordinator {
 
     func showAddUserScreen() {
         let addUserVC = AddUserViewController()
-        addUserVC.delegate = self // AppCoordinator'u delegate yapıyoruz
         navigationController.pushViewController(addUserVC, animated: true)
     }
 }

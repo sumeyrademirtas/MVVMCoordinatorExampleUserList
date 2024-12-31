@@ -17,9 +17,8 @@ class UserDetailCoordinator: Coordinator {
     }
 
     func start(user: CDUser) {
-        let userDetailVC = UserDetailViewController()
-        userDetailVC.user = user
-        userDetailVC.delegate = self
+        let viewModel = UserDetailViewModel(user: user) // ViewModel oluştur
+        let userDetailVC = UserDetailViewController(viewModel: viewModel) // ViewModel'i ilet
         navigationController.pushViewController(userDetailVC, animated: true)
     }
 
