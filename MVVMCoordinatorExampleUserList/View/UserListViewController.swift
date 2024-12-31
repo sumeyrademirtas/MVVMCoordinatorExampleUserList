@@ -8,18 +8,25 @@
 import UIKit
 
 class UserListViewController: UIViewController {
-    private let tableView: UITableView = .init()
-    weak var coordinator: AppCoordinator? // Ekranlar arası geçişi AppCoordinator’a bildirmek için kullanılacak.
+    private let userListView = UserListView()
+    private let viewModel = UserListViewModel()
+    weak var coordinator: AppCoordinator?
 
-    private var users: [CDUser] = [] // Core Data'dan gelen kullanıcıları saklamak için dizi // GÜNCELLENDİ
+    override func loadView() {
+        view = userListView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         title = "User List"
-
+        setupAddButton()
         setupTableView()
-        setupAddButton() // Yeni bir fonksiyonla + butonunu ayarlıyoruz
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchUsers()
+        reloadData()
     }
 
     private func setupAddButton() {
@@ -27,63 +34,49 @@ class UserListViewController: UIViewController {
     }
 
     @objc private func didTapAddUser() {
-        coordinator?.showAddUserScreen() // Coordinator üzerinden add user ekranına geçiş yap
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Core Data'dan kullanıcıları al // GÜNCELLENDİ
-        users = CoreDataManager.shared.fetchUsers()
-        reloadData() // GÜNCELLENDI
+        coordinator?.showAddUserScreen()
     }
 
     private func setupTableView() {
-        tableView.frame = view.bounds
-        tableView.dataSource = self
-        tableView.delegate = self
-        view.addSubview(tableView)
+        userListView.tableView.dataSource = self
+        userListView.tableView.delegate = self
     }
 
-    func reloadData() { // GÜNCELLENDİ
-        tableView.reloadData() // GÜNCELLENDİ
+    func reloadData() {
+        userListView.tableView.reloadData()
     }
 }
 
 extension UserListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count // Core Data'dan gelen kullanıcı sayısı // GÜNCELLENDİ
+        return viewModel.numberOfUsers()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        let user = users[indexPath.row] // GÜNCELLENDİ
-        cell.textLabel?.text = user.name // GÜNCELLENDİ
-        cell.detailTextLabel?.text = user.email // GÜNCELLENDİ
+        if let user = viewModel.getUser(at: indexPath.row) {
+            cell.textLabel?.text = user.name
+            cell.detailTextLabel?.text = user.email
+        }
         return cell
     }
 }
 
 extension UserListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedUser = users[indexPath.row] // Core Data'dan gelen kullanıcı // GÜNCELLENDİ
-        coordinator?.showUserDetail(user: selectedUser) // GÜNCELLENDİ
+        if let selectedUser = viewModel.getUser(at: indexPath.row) {
+            coordinator?.showUserDetail(user: selectedUser)
+        }
     }
-    
+
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            if editingStyle == .delete {
-                // 1. Core Data'dan kullanıcıyı sil
-                let userToDelete = users[indexPath.row]
-                CoreDataManager.shared.deleteUser(userToDelete)
-                
-                // 2. users dizisinden kaldır
-                users.remove(at: indexPath.row)
-                
-                // 3. TableView'dan hücreyi kaldır
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
+        if editingStyle == .delete {
+            viewModel.deleteUser(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
+    }
 }
