@@ -33,8 +33,8 @@ class UserListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Core Data'dan kullanıcıları al // GÜNCELLENDİ
-        users = CoreDataManager.shared.fetchUsers() ?? [] // GÜNCELLENDİ
-        reloadData() // GÜNCELLENDİ
+        users = CoreDataManager.shared.fetchUsers()
+        reloadData() // GÜNCELLENDI
     }
 
     private func setupTableView() {

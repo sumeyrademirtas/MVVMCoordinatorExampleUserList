@@ -12,16 +12,15 @@ class AppCoordinator: Coordinator {
     let uiWindow: UIWindow
     var navigationController: UINavigationController
     let firstScreen = UserListViewController()
-    
+
     var childCoordinators: [Coordinator] = []
-    
+
     init(windowScene: UIWindowScene) {
         self.uiWindow = UIWindow(windowScene: windowScene)
         self.navigationController = UINavigationController()
     }
-    
+
     func start() {
-        //CoreDataManager.shared.initializeData() // Örnek kullanıcıları ekle
         firstScreen.coordinator = self
         uiWindow.rootViewController = navigationController
         uiWindow.makeKeyAndVisible()
@@ -34,31 +33,20 @@ class AppCoordinator: Coordinator {
         detailVC.delegate = self // Delegate olarak AppCoordinator atanıyor
         navigationController.pushViewController(detailVC, animated: true)
     }
-    
+
     func showEditScreen(for user: CDUser) {
         let editCoordinator = UserEditCoordinator(navigationController: navigationController)
         editCoordinator.delegate = self // Delegate'i ata
         childCoordinators.append(editCoordinator) // Child coordinators listesine ekle
         editCoordinator.start(user: user) // Başlat
     }
-    
-    private func updateUser(_ updatedUser: CDUser) {
-        CoreDataManager.shared.saveContext()
-        refreshUserList()
-    }
-    
-    private func refreshUserList() {
-        if let userListVC = navigationController.viewControllers.first as? UserListViewController {
-            userListVC.reloadData()
-        }
-    }
-    
+
     func removeChildCoordinator(_ coordinator: Coordinator) {
         print("Before removing: \(childCoordinators.count) coordinators") // Test
         childCoordinators.removeAll { $0 === coordinator }
         print("After removing: \(childCoordinators.count) coordinators") // Test
     }
-    
+
     func showAddUserScreen() {
         let addUserVC = AddUserViewController()
         addUserVC.delegate = self // AppCoordinator'u delegate yapıyoruz
@@ -68,16 +56,8 @@ class AppCoordinator: Coordinator {
 
 extension AppCoordinator: UserEditCoordinatorDelegate {
     func userEditCoordinatorDidFinish(_ coordinator: UserEditCoordinator, updatedUser: CDUser?) {
-        if let user = updatedUser {
-            updateUser(user)
-        }
-        // Listeyi güncelle
-        refreshUserList()
-        // Detay ekranını güncelle
-        if let detailVC = navigationController.viewControllers.last as? UserDetailViewController {
-            detailVC.user = updatedUser
-            detailVC.refreshUI()
-        }
+        // Child koordinatörün işini tamamladığını belirtiyor ve bellekten temizlenmesi için kaldırıyoruz.
+        // Bu, hafıza sızıntılarını önlemek ve koordinatör yapısını temiz tutmak için gereklidir.
         removeChildCoordinator(coordinator)
     }
 }
@@ -89,8 +69,5 @@ extension AppCoordinator: UserDetailViewControllerDelegate {
 }
 
 extension AppCoordinator: AddUserViewControllerDelegate {
-    func addUserViewControllerDidSave(_ viewController: AddUserViewController, name: String, email: String) {
-        CoreDataManager.shared.addUser(name: name, email: email)
-        refreshUserList()
-    }
+    func addUserViewControllerDidSave(_ viewController: AddUserViewController, name: String, email: String) {}
 }

@@ -8,12 +8,9 @@
 import UIKit
 
 class UserDetailCoordinator: Coordinator {
-    func start() {
-        
-    }
-    
+    func start() {}
+
     var navigationController: UINavigationController
-    var completion: (() -> Void)?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -24,10 +21,6 @@ class UserDetailCoordinator: Coordinator {
         userDetailVC.user = user
         userDetailVC.delegate = self
         navigationController.pushViewController(userDetailVC, animated: true)
-    }
-
-    func finish() {
-        completion?()
     }
 
     func showEditScreen(for user: CDUser) {

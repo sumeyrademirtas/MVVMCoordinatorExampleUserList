@@ -14,6 +14,8 @@ protocol AddUserViewControllerDelegate: AnyObject {
 
 class AddUserViewController: UIViewController {
     weak var delegate: AddUserViewControllerDelegate?
+    private let viewModel = AddUserViewModel() // ViewModel'i tanımla
+
     
     // Name TextField
     private let nameTextField: UITextField = {
@@ -91,6 +93,7 @@ class AddUserViewController: UIViewController {
             showAlert(message: "Please fill in all fields.")
             return
         }
+        viewModel.addUser(name: name, email: email) 
         delegate?.addUserViewControllerDidSave(self, name: name, email: email)
         navigationController?.popViewController(animated: true)
     }
