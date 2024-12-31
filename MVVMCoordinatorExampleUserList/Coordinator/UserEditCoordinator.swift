@@ -25,27 +25,13 @@ class UserEditCoordinator: Coordinator {
 
     func start(user: CDUser) {
         print("UserEditCoordinator started") // Test
-        let userEditVC = UserEditViewController()
-        userEditVC.user = user
-        userEditVC.delegate = self // Delegate'i ata
-        print("Delegate assigned: \(self)") // Test
+        let userEditViewModel = UserEditViewModel(user: user)
+        let userEditVC = UserEditViewController(viewModel: userEditViewModel)
         navigationController.pushViewController(userEditVC, animated: true)
     }
 
     func finish(updatedUser: CDUser? = nil) {
         navigationController.popViewController(animated: true)
-        delegate?.userEditCoordinatorDidFinish(self, updatedUser: updatedUser)
     }
 }
 
-extension UserEditCoordinator: UserEditViewControllerDelegate {
-    func userEditViewControllerDidSave(_ viewController: UserEditViewController, updatedUser: CDUser) {
-        print("Delegate save çağrıldı!") // Test
-        finish(updatedUser: updatedUser)
-    }
-
-    func userEditViewControllerDidCancel(_ viewController: UserEditViewController) {
-        print("Delegate cancel çağrıldı!") // Test
-        finish()
-    }
-}

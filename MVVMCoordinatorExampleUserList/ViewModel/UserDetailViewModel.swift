@@ -25,4 +25,10 @@ class UserDetailViewModel {
     func getUser() -> CDUser {
         return user
     }
+    
+    func reloadUser() {
+        if let updatedUser = CoreDataManager.shared.fetchUser(byEmail: user.email ?? "") {
+            self.user = updatedUser
+        }
+    }
 }

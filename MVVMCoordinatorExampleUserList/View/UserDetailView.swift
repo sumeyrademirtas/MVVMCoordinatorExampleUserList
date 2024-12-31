@@ -87,6 +87,5 @@ class UserDetailView: UIView {
             make.top.equalTo(emailLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
-        editButton.isUserInteractionEnabled = true // Buraya ekle
     }
 }

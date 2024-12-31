@@ -30,6 +30,12 @@ class UserDetailViewController: UIViewController {
     override func loadView() {
         view = userDetailView
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reloadUser()
+        refreshUI()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
